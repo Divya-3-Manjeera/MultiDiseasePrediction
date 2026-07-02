@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Diabetes Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <script>
+        function showForm(gender) {
+            document.getElementById("genderBox").style.display = "none";
+            document.getElementById("maleForm").style.display = "none";
+            document.getElementById("femaleForm").style.display = "none";
+
+            if (gender === "male") {
+                document.getElementById("maleForm").style.display = "block";
+            } else {
+                document.getElementById("femaleForm").style.display = "block";
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #8ecae6;
+            height: 100vh;
+        }
+
+        .page-title {
+            text-align: center;
+            color: black;
+            font-weight: bold;
+            margin-top: 20px;
+            letter-spacing: 1px;
+        }
+
+        #genderBox {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .card-box {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            width: 650px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .form-control {
+            margin-bottom: 10px;
+            height: 42px;
+        }
+
+        .btn-success {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #1e88e5, #42a5f5);
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .gender-btn {
+            width: 150px;
+            font-size: 18px;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .result-text {
+            margin-top: 15px;
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .form-row label {
+            width: 220px;
+            font-weight: 600;
+        }
+
+        .form-row input,
+        .form-row select {
+            flex: 1;
+            height: 40px;
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .form-card {
+            width: 650px;
+        }
+
+        .result-card {
+            width: 320px;
+            padding: 25px;
+            border-radius: 12px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(230, 245, 255, 0.95));
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            height: fit-content;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h2 class="page-title">Diabetic Disease Prediction System</h2>
+    <p style="text-align:center;color:black;">
+        AI Powered Medical Prediction System
+    </p>
+
+    <!-- Gender Selection -->
+    <div id="genderBox" class="card-box text-center">
+        <h4>Select Gender</h4>
+        <button class="btn btn-primary gender-btn m-2" onclick="showForm('male')">Male</button>
+        <button class="btn btn-danger gender-btn m-2" onclick="showForm('female')">Female</button>
+    </div>
+
+    <!-- Male Form -->
+    <div id="maleForm" style="display:none;">
+        <div class="main-container">
+
+            <div class="card-box form-card">
+                <h4>Male Form</h4>
+
+                <form action="/predict_male" method="post">
+
+                    <div class="form-row">
+                        <label>Age</label>
+                        <input type="number" name="age" class="form-control" min="1" max="120" placeholder="1 - 120"
+                            title="Age must be between 1 and 120" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Hypertension</label>
+                        <select name="hypertension" class="form-control" required>
+                            <option value="" disabled selected>Select</option>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Heart Disease</label>
+                        <select name="heart_disease" class="form-control" required>
+                            <option value="" disabled selected>Select</option>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Smoking History</label>
+                        <select name="smoking_history" class="form-control" required>
+                            <option value="" disabled selected>Select</option>
+                            <option value="never">Never</option>
+                            <option value="current">Current</option>
+                            <option value="former">Former</option>
+                            <option value="ever">Ever</option>
+                            <option value="not current">Not Current</option>
+                            <option value="No Info">No Info</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label>BMI</label>
+                        <input type="number" step="0.1" name="bmi" class="form-control" min="10" max="60"
+                            placeholder="10.0 - 60.0" title="BMI must be between 10 and 60" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label>HbA1c Level</label>
+                        <input type="number" step="0.1" name="HbA1c_level" class="form-control" min="3.5" max="15"
+                            placeholder="3.5 - 15.0" title="HbA1c must be between 3.5 and 15" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Blood Glucose</label>
+                        <input type="number" name="blood_glucose_level" class="form-control" min="50" max="500"
+                            placeholder="50 - 500" title="Blood Glucose must be between 50 and 500" required>
+                    </div>
+
+                    <button class="btn btn-success">Predict</button>
+                </form>
+            </div>
+
+            <div class="result-card">
+                <h5>Prediction Result</h5>
+                <hr>
+
+                {% if male_result %}
+                <h4>{{ male_result }}</h4>
+                {% else %}
+                <p>Result will appear here</p>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Female Form -->
+    <div id="femaleForm" style="display:none;">
+        <div class="main-container">
+
+            <div class="card-box form-card">
+                <h4>Female Form</h4>
+
+                <form action="/predict_female" method="post">
+
+                    <div class="form-row">
+                        <label>Pregnancies</label>
+                        <input type="number" name="pregnancies" class="form-control" min="0" max="20"
+                            placeholder="0 - 20" title="Pregnancies must be between 0 and 20" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Glucose</label>
+                        <input type="number" name="glucose" class="form-control" min="40" max="500"
+                            placeholder="40 - 500" title="Glucose must be between 40 and 500" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Blood Pressure</label>
+                        <input type="number" name="bloodpressure" class="form-control" min="40" max="200"
+                            placeholder="40 - 200" title="Blood Pressure must be between 40 and 200" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Skin Thickness</label>
+                        <input type="number" name="skinthickness" class="form-control" min="0" max="100"
+                            placeholder="0 - 100" title="Skin Thickness must be between 0 and 100" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Insulin</label>
+                        <input type="number" name="insulin" class="form-control" min="0" max="900" placeholder="0 - 900"
+                            title="Insulin must be between 0 and 900" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label>BMI</label>
+                        <input type="number" step="0.1" name="bmi" class="form-control" min="10" max="70"
+                            placeholder="10.0 - 70.0" title="BMI must be between 10 and 70" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Diabetes Pedigree</label>
+                        <input type="number" step="0.001" name="dpf" class="form-control" min="0.05" max="2.5"
+                            placeholder="0.05 - 2.50" title="Diabetes Pedigree Function must be between 0.05 and 2.5"
+                            required>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Age</label>
+                        <input type="number" name="age" class="form-control" min="1" max="120" placeholder="1 - 120"
+                            title="Age must be between 1 and 120" required>
+                    </div>
+
+                    <button class="btn btn-success">Predict</button>
+                </form>
+            </div>
+
+            <div class="result-card">
+                <h5>Prediction Result</h5>
+                <hr>
+
+                {% if female_result %}
+                <h4>{{ female_result }}</h4>
+                {% else %}
+                <p>Result will appear here</p>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+        {% if selected_gender == "male" %}
+        showForm('male');
+        {% elif selected_gender == "female" %}
+        showForm('female');
+        {% endif %}
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Kidney Stone Detection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #8ecae6;
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        /* Page Header */
+        .page-title {
+            text-align: center;
+            color: #1b2a4a;
+            font-weight: 700;
+            margin-top: 25px;
+            font-size: 28px;
+            letter-spacing: 0.5px;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: #2c6e91;
+            margin-bottom: 30px;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            text-decoration: none;
+            color: #1b2a4a;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.3s;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 8px 16px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+            color: #1e88e5;
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 25px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            padding: 0 30px;
+        }
+
+        /* Glass Card */
+        .card-box {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.18);
+            transition: transform 0.3s ease;
+        }
+
+        .card-box:hover {
+            transform: translateY(-3px);
+        }
+
+        .upload-card {
+            width: 520px;
+        }
+
+        .result-card {
+            width: 420px;
+            text-align: center;
+            min-height: 380px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1b2a4a;
+            margin-bottom: 8px;
+        }
+
+        .section-desc {
+            font-size: 13px;
+            color: #6b7c93;
+            margin-bottom: 25px;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2.5px dashed #a0c4e8;
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(142, 202, 230, 0.08);
+            position: relative;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: #1e88e5;
+            background: rgba(30, 136, 229, 0.06);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .upload-text {
+            font-size: 15px;
+            color: #4a6785;
+            font-weight: 500;
+        }
+
+        .upload-hint {
+            font-size: 12px;
+            color: #95a5b8;
+            margin-top: 6px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-name {
+            margin-top: 12px;
+            font-size: 13px;
+            color: #1e88e5;
+            font-weight: 500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .file-name.active {
+            display: flex;
+        }
+
+        /* Preview Image */
+        .preview-container {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .preview-container.active {
+            display: block;
+        }
+
+        .preview-img {
+            max-width: 100%;
+            max-height: 180px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            object-fit: contain;
+        }
+
+        /* Submit Button */
+        .predict-btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #1e88e5, #42a5f5);
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(30, 136, 229, 0.3);
+        }
+
+        .predict-btn:hover {
+            background: linear-gradient(135deg, #1565c0, #1e88e5);
+            box-shadow: 0 6px 20px rgba(30, 136, 229, 0.45);
+            transform: translateY(-1px);
+        }
+
+        .predict-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Result Styles */
+        .result-placeholder {
+            color: #95a5b8;
+            font-size: 14px;
+        }
+
+        .result-placeholder .placeholder-icon {
+            font-size: 56px;
+            display: block;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+
+        .result-badge {
+            display: inline-block;
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 15px;
+            letter-spacing: 0.5px;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .badge-danger {
+            background: linear-gradient(135deg, #ff5252, #ff1744);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 23, 68, 0.3);
+        }
+
+        .badge-success {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .result-image {
+            width: 240px;
+            max-width: 100%;
+            margin-top: 20px;
+            border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+            border: 3px solid white;
+        }
+
+        .result-label {
+            font-size: 13px;
+            color: #6b7c93;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+
+        /* Info Cards */
+        .info-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .info-item {
+            flex: 1;
+            background: rgba(142, 202, 230, 0.15);
+            border-radius: 12px;
+            padding: 14px 10px;
+            text-align: center;
+        }
+
+        .info-item .info-icon {
+            font-size: 22px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .info-item .info-label {
+            font-size: 11px;
+            color: #6b7c93;
+            font-weight: 500;
+        }
+
+        .info-item .info-value {
+            font-size: 13px;
+            color: #1b2a4a;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .footer-text {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #5a7a96;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.5s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .upload-card,
+            .result-card {
+                width: 90%;
+                max-width: 500px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <a href="/" class="back-btn">← Back to Home</a>
+
+    <h2 class="page-title">Kidney Stone Detection</h2>
+    <p class="page-subtitle">Upload a CT Scan Image for AI-Powered Analysis</p>
+
+    <div class="main-container">
+
+        <!-- Upload Card -->
+        <div class="card-box upload-card fade-in">
+            <h4 class="section-title">📤 Upload CT Scan</h4>
+            <p class="section-desc">Drag & drop or click to upload your kidney CT scan image for analysis</p>
+
+            <form method="POST" action="/kidney_pred" enctype="multipart/form-data" id="uploadForm">
+
+                <div class="upload-area" id="uploadArea">
+                    <span class="upload-icon">🩻</span>
+                    <p class="upload-text">Drag & Drop your CT Scan here</p>
+                    <p class="upload-hint">or click to browse — Supports JPG, PNG, JPEG</p>
+                    <input type="file" name="image" class="file-input" id="fileInput" accept="image/*" required>
+                </div>
+
+                <div class="file-name" id="fileName">
+                    📎 <span id="fileNameText"></span>
+                </div>
+
+                <div class="preview-container" id="previewContainer">
+                    <img src="" alt="Preview" class="preview-img" id="previewImg">
+                </div>
+
+                <button type="submit" class="predict-btn">🔍 Analyze Scan</button>
+            </form>
+
+
+        </div>
+
+        <!-- Result Card -->
+        <div class="card-box result-card fade-in">
+            <h4 class="section-title">📋 Prediction Result</h4>
+            <hr style="border-color: #e0ecf5; margin-bottom: 20px;">
+
+            {% if prediction %}
+
+            {% if prediction == "Stone Detected" %}
+            <span class="result-badge badge-danger">⚠️ Stone Detected</span>
+            {% else %}
+            <span class="result-badge badge-success">✅ Normal — No Stone</span>
+            {% endif %}
+
+            <img src="{{ url_for('static', filename='uploads/' + img_path.split('\\')[-1]) }}" class="result-image"
+                alt="Scanned Image">
+            <p class="result-label">Uploaded CT Scan</p>
+
+            {% else %}
+
+            <div class="result-placeholder">
+                <span class="placeholder-icon">🩺</span>
+                <p>Upload a CT scan image and click<br><strong>"Analyze Scan"</strong> to see the result</p>
+            </div>
+
+            {% endif %}
+        </div>
+
+    </div>
+
+    <p class="footer-text">AI Medical Assistant — For educational purposes only. Consult a doctor for medical
+        advice.</p>
+
+    <!-- JavaScript for Upload Interaction -->
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileName = document.getElementById('fileName');
+        const fileNameText = document.getElementById('fileNameText');
+        const previewContainer = document.getElementById('previewContainer');
+        const previewImg = document.getElementById('previewImg');
+
+        // Click to browse
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        // Drag & Drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                showPreview(files[0]);
+            }
+        });
+
+        // File selected
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                showPreview(fileInput.files[0]);
+            }
+        });
+
+        function showPreview(file) {
+            // Show file name
+            fileNameText.textContent = file.name;
+            fileName.classList.add('active');
+
+            // Show image preview
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewImg.src = e.target.result;
+                previewContainer.classList.add('active');
+            };
+            reader.readAsDataURL(file);
+
+            // Update upload area text
+            uploadArea.querySelector('.upload-text').textContent = 'Image selected! Click to change';
+            uploadArea.querySelector('.upload-icon').textContent = '✅';
+        }
+    </script>
+
+</body>
+
+</html>

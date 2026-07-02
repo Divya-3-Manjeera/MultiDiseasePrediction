@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Multi Disease Prediction System</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+
+/* Background */
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background-color: #93c5fd;
+    /*background-image: url("{{ url_for('static', filename='home_bg.jpeg') }}");*/
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height:100vh;
+}
+
+/* Heading */
+.main-title{
+    text-align:center;
+    color:#1b2a4a;
+    margin-top:40px;
+    font-weight:bold;
+}
+
+.subtitle{
+    text-align:center;
+    color:#2c6e91;
+    margin-bottom:40px;
+    font-size:20px;
+}
+
+/* Card section */
+.card-container{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    flex-wrap:wrap;
+    padding-bottom:40px;
+}
+
+/* Cards */
+.custom-card{
+    width:300px;
+    border-radius:18px;
+    background:rgba(255,255,255,0.9);
+    box-shadow:0 8px 25px rgba(0,0,0,0.15);
+    overflow:hidden;
+    transition:0.3s;
+    padding: 15px;
+}
+
+.custom-card:hover{
+    transform:translateY(-8px);
+}
+
+/* Card image */
+.card-img-top{
+    height:170px;
+    object-fit:cover;
+    border-radius:12px;
+    margin-bottom:10px;
+}
+
+
+/* Button */
+.start-btn{
+    background:linear-gradient(90deg,#3aa6ff,#00c6ff);
+    border:none;
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    color:white;
+    font-weight:bold;
+}
+
+.start-btn:hover{
+    opacity:0.9;
+}
+.card-box{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
+}
+
+.card-box p{
+    margin-bottom:20px;   /* space between text and button */
+}
+
+.btn-area{
+    margin-top:15px;      /* separates button block from text */
+}
+
+.start-btn{
+    display:inline-block;
+    padding:12px 28px;    /* button padding */
+    background:#2F80ED;
+    color:white;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:bold;
+    font-size:16px;
+    transition:0.3s;
+}
+
+.start-btn:hover{
+    background:#1c60c7;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1 class="main-title">MULTI-DISEASE PREDICTION SYSTEM</h1>
+<p class="subtitle">Early Detection. Better Prevention</p>
+
+<div class="card-container">
+
+    <!-- Diabetes -->
+    <div class="custom-card">
+        <img src="{{ url_for('static', filename='dia_wp.jpeg') }}" class="card-img-top">
+        <br>
+        <div class="card-body text-center">
+            <h5>Diabetes Check</h5>
+            <p>Assess your diabetes risk using health parameters.</p>
+        </div>
+        <div class="btn-area text-center pb-3">    
+            <a href="/diabetic_pred"><button class="start-btn">Let's Start →</button></a>
+        </div>
+    </div>
+
+    <!-- Heart -->
+    <div class="custom-card">
+        <img src="{{ url_for('static', filename='kid_wp.jpeg') }}" class="card-img-top">
+        <br>
+        <div class="card-body text-center">
+            <h5>Kidney Stone Detection</h5>
+            <p>Upload your CT scan to check whether kidney stones are present/not </p>
+        </div>
+        <div class="btn-area text-center pb-3">   
+            <a href="/kidney_pred"><button class="start-btn">Let's Start →</button></a>
+        </div>
+    </div>
+
+    <!-- Symptoms -->
+    <div class="custom-card">
+        <img src="{{ url_for('static', filename='sym_wp.jpeg') }}" class="card-img-top">
+        <br>
+        <div class="card-body text-center">
+            <h5>Symptom Checker</h5>
+            <p>Analyze symptoms to predict possible conditions.</p>
+        </div>
+        <div class="btn-area text-center pb-3">   
+            <a href="/predict"><button class="start-btn">Let's Start →</button></a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+# Python virtual environment
+venv/
+# Python cache files
+**pycache**/
+*.pyc
+*.pyo
+*.pyd
+# Flask uploads (user generated files)
+static/uploads/
+# Environment variables (if used later)
+.env
+# VS Code settings (optional)
+.vscode/
+# OS files
+.DS_Store
+Thumbs.db
+# Large model file
+models/kidney_model.keras
